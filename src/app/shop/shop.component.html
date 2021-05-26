@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-3">
+    <ul class="list-group">
+      <li class="list-group-item" (click)="getAll()" [ngClass]="{'active': 'all'==this.selectedCategory}">
+        All</li>
+
+      <li class="list-group-item" *ngFor="let category of categories" (click)="catClicked(category)"
+        [ngClass]="{'active': category==this.selectedCategory}">{{category}}</li>
+    </ul>
+  </div>
+  <div class="row col-9">
+    <app-article-element *ngFor="let article of articles" [article]="article" class=" col-4" style="width: 18rem;">
+    </app-article-element>
+  </div>
+</div>

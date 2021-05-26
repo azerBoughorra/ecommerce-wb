@@ -1,0 +1,57 @@
+import { Injectable } from '@angular/core';
+import { Article } from './models/article.model';
+import { CartElement } from './models/cart-element.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ArticleService {
+
+
+  private Data = [
+    new Article(1, "tapis de souris", "Plus petit mais tout aussi efficace que le QcK, le QcK Mini est le premier tapis de chez Steelseries en mousse et tissu.", "https://media.ldlc.com/r1600/ld/products/00/03/49/81/LD0003498188_2.jpg", 30, "Gaming"),
+    new Article(2, "PC portable DELL", "Ecran 15.6  HD, Processeur Intel ® Core ™ i7-5500U (2.4-3.0 GHz, 4 Mo de mémoire cache), Systéme d'exploitation Free Dos, Mémoire RAM8 Go DDR3L, Disque Dur 1 To HDD,  Carte Graphique NVIDIA Geforce 920M ( 4Go dédiée ) avec WiFi, Ethernet, Bluetooth", "https://www.tunisianet.com.tn/69371-large/pc-portable-dell-inspiron-7559-i5-6e-gen-16go-128-go-ssd-m2.jpg", 1299, "Laptop"),
+    new Article(3, "PC portable TOCHIBA", "Ordinateur / PC Portable Dynabook Toshiba Satellite Pro R50-E-12P - Core i3 7020U / 2.3 GHz - Win 10 Pro 64 bits - 8 Go RAM - 128 Go SSD - 15.6 1366 x 768 (HD) - UHD Graphics 620 - Wi-Fi, Bluetooth - noir graphite - avec 1 an de garantie fiabilité", "https://image.darty.com/informatique/ordinateur_portable-portable/portable/toshiba_c50t-b-110_s1510124166795A_104519670.jpg", 1500, "Laptop"),
+    new Article(4, "casque Bluetooth JBL", "Micro Casque JBL T500 - Connectivité Sans Fil: Bluetooth V 4.1 - Impédance nominale: 32 ohm - Réponse en fréquence: 20 - 20 kHz - Diamètre du haut-parleur: 32mm - Batterie Lithium-ion-polymère - Temps de charge: 2 heures - Autonomie: 16 heures - Couleur: Noir", "https://www.gforcedistribution.com/3787-large_default/jbl-tune-750btnc-noir.jpg", 80, "Sound"),
+    new Article(5, "Enceinte Bluetooth Portable", "COOCHEER 24W Haut-Parleur Portable Bluetooth avec lumière", "https://images-na.ssl-images-amazon.com/images/I/810neKWwu0L._AC_SY450_.jpg", 50, "Sound")
+  ]
+  constructor() { }
+  getAll() {
+    return this.Data;
+  }
+  getCategories() {
+    let duplicatedCategories = this.Data.map(d => d.category);
+    let categories: string[] = [];
+    duplicatedCategories.forEach((d, i) => {
+      if (duplicatedCategories.indexOf(d) == i) {
+        categories.push(d);
+      }
+    });
+    return categories;
+
+  }
+  getArticlesByCategory(category: string) {
+    let articles: Article[] = [];
+    for (const article of this.Data) {
+      if (article.category == category) {
+        articles.push(article)
+      }
+    }
+    return articles;
+  }
+  getArticleById(id: number): Article {
+    return this.Data.find((d) => d.id == id)
+  }
+
+  addToCart(element: CartElement) {
+    let cart = this.getCart();
+    cart.push(element);
+    this.setCart(cart);
+  }
+  getCart() {
+    return JSON.parse(sessionStorage.getItem('cart')) || [];
+  }
+  setCart(cart: CartElement[]) {
+    sessionStorage.setItem('cart', JSON.stringify(cart))
+  }
+}
