@@ -43,10 +43,15 @@ export class ArticleService {
     return this.Data.find((d) => d.id == id)
   }
 
-  addToCart(element: CartElement) {
-    let cart = this.getCart();
-    cart.push(element);
-    this.setCart(cart);
+  addToCart(chartArticle: CartElement) {
+    let chartArticles: CartElement[] = this.getCart();
+    const index = chartArticles.findIndex(i => i.article.id == chartArticle.article.id);
+    if (index >= 0) {
+      chartArticles[index].quantity = chartArticle.quantity;
+    } else {
+      chartArticles.push(chartArticle)
+    }
+    this.setCart(chartArticles);
   }
   getCart() {
     return JSON.parse(sessionStorage.getItem('cart')) || [];

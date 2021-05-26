@@ -7,10 +7,10 @@
     <p style="width: 337px;">{{article.desc}}</p>
     prix : {{article.price}} DT
     <div>
-      <input class="number-of-article-input" type="number" [(ngModel)]="quantity">
-      <button class="btn btn-primary add-to-chart-btn" (click)="add()"> Ajouter au
+      <input class="number-of-article-input" (ngModelChange)="quantityChanged($event)" type="number"
+        [(ngModel)]="quantity">
+      <button class="btn btn-primary add-to-chart-btn" (click)="add(this.quantity)" [disabled]="inChart"> Ajouter au
         panier</button>
-      {{quantity}}
     </div>
   </div>
 </div>
