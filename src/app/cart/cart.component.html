@@ -1,1 +1,28 @@
-<p>cart works!</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Article</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Unit price</th>
+      <th scope="col">Price</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of cart;let i=index" style="height: 100px;">
+      <td>
+        <img [src]="item.article.img" class="chart-image">
+      </td>
+      <td><a [routerLink]="['/details',item.article.id]">{{ item.article.name}}</a></td>
+      <td>{{ item.quantity | number }}</td>
+      <td>{{ item.article.price| number }} DT</td>
+      <td>{{ item.quantity * item.article.price| number }} DT</td>
+      <td><button class="btn btn-danger" (click)="deleteElement(i)">delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="text-right">
+  Total : {{getTotal() |number}} DT
+</div>
