@@ -1,7 +1,8 @@
+import { LoginService } from './../login.service';
 import { CartElement } from './../models/cart-element.model';
 import { Article } from './../models/article.model';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleService } from '../article.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { ArticleService } from '../article.service';
 })
 export class ArticleDetailsComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private service: ArticleService) {
+  constructor(private route: ActivatedRoute, private service: ArticleService, private router: Router, private loginService: LoginService) {
 
 
   }
@@ -22,7 +23,9 @@ export class ArticleDetailsComponent implements OnInit {
   id: number;
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
-    this.article = this.service.getArticleById(this.id)
+    this.service.getArticleById(this.id).subscribe(x => {
+      this.article = x;
+    })
     this.cart = this.service.getCart();
     const cartArticle = this.cart.find(i => i.article.id == this.id);
     if (cartArticle) {
@@ -40,6 +43,17 @@ export class ArticleDetailsComponent implements OnInit {
     if (this.inCart) {
       this.add(qte);
     }
+  }
+  deleteArticle() {
+    this.service.deleteArticle(this.id).subscribe(() => {
+      this.router.navigate(['/shop'])
+    })
+  }
+  isLoggedIn() {
+    if (this.loginService.getToken() != null && this.loginService.getToken() != undefined) {
+      return true
+    }
+    return false;
   }
 
 }

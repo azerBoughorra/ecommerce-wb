@@ -11,14 +11,18 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/cart']" *ngIf="getCartSize()!=0">cart
-          ({{getChartSize()}})
+          ({{getCartSize()}})
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/add-article']" *ngIf="isLoggedIn()">add article
         </a>
       </li>
     </ul>
-    <!-- <form class="form-inline my-2 my-lg-0">
-      <a class="nav-link" [routerLink]="['/shop']">Login </a>
-
-    </form> -->
+    <form class="form-inline my-2 my-lg-0">
+      <a class="nav-link" [routerLink]="['/login']" *ngIf="!isLoggedIn()">Login </a>
+      <a class="nav-link" (click)="loggout()" *ngIf="isLoggedIn()">Loggout </a>
+    </form>
   </div>
 </nav>
 

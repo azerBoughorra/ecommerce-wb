@@ -1,3 +1,5 @@
+import { LoginService } from './login.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Article } from './models/article.model';
 import { CartElement } from './models/cart-element.model';
@@ -15,32 +17,25 @@ export class ArticleService {
     new Article(4, "casque Bluetooth JBL", "Micro Casque JBL T500 - Connectivité Sans Fil: Bluetooth V 4.1 - Impédance nominale: 32 ohm - Réponse en fréquence: 20 - 20 kHz - Diamètre du haut-parleur: 32mm - Batterie Lithium-ion-polymère - Temps de charge: 2 heures - Autonomie: 16 heures - Couleur: Noir", "https://www.gforcedistribution.com/3787-large_default/jbl-tune-750btnc-noir.jpg", 80, "Sound"),
     new Article(5, "Enceinte Bluetooth Portable", "COOCHEER 24W Haut-Parleur Portable Bluetooth avec lumière", "https://images-na.ssl-images-amazon.com/images/I/810neKWwu0L._AC_SY450_.jpg", 50, "Sound")
   ]
-  constructor() { }
+  constructor(private http: HttpClient, private loginService: LoginService) { }
   getAll() {
-    return this.Data;
+    return this.http.get<Article[]>("/api/articles")
   }
   getCategories() {
-    let duplicatedCategories = this.Data.map(d => d.category);
-    let categories: string[] = [];
-    duplicatedCategories.forEach((d, i) => {
-      if (duplicatedCategories.indexOf(d) == i) {
-        categories.push(d);
-      }
-    });
-    return categories;
+    return this.http.get<string[]>("/api/categories")
 
   }
   getArticlesByCategory(category: string) {
-    let articles: Article[] = [];
-    for (const article of this.Data) {
-      if (article.category == category) {
-        articles.push(article)
-      }
-    }
-    return articles;
+    return this.http.get<Article[]>("/api/articles/category/" + category);
   }
-  getArticleById(id: number): Article {
-    return this.Data.find((d) => d.id == id)
+  getArticleById(id: number) {
+    return this.http.get<Article>("/api/articles/" + id)
+  }
+  addArticle(article: Article) {
+    let header = new HttpHeaders({
+      'x-access-token': this.loginService.getToken()
+    });
+    return this.http.put("/api/articles/", article, { headers: header })
   }
 
   addToCart(chartArticle: CartElement) {
@@ -58,5 +53,11 @@ export class ArticleService {
   }
   setCart(cart: CartElement[]) {
     sessionStorage.setItem('cart', JSON.stringify(cart))
+  }
+  deleteArticle(id: number) {
+    let header = new HttpHeaders({
+      'x-access-token': this.loginService.getToken()
+    });
+    return this.http.delete("api/articles/" + id, { headers: header })
   }
 }

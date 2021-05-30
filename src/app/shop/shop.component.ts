@@ -15,18 +15,27 @@ export class ShopComponent implements OnInit {
   constructor(public service: ArticleService) { }
 
   ngOnInit(): void {
-    this.articles = this.service.getAll();
-    this.categories = this.service.getCategories();
+    this.service.getAll().subscribe(articles => {
+      this.articles = articles;
+    })
+
+    this.service.getCategories().subscribe(cats => {
+      this.categories = cats;
+    });
 
 
   }
   catClicked(category: string) {
     this.selectedCategory = category;
-    this.articles = this.service.getArticlesByCategory(category)
+    this.service.getArticlesByCategory(category).subscribe(x => {
+      this.articles = x;
+    })
   }
   getAll() {
     this.selectedCategory = 'all';
-    this.articles = this.service.getAll();
+    this.service.getAll().subscribe(e => {
+      this.articles = e;
+    });
   }
 
 }

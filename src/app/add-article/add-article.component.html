@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-3"> name</div>
+  <div class="col-4">
+    <input class="form-control" [(ngModel)]="article.name" type="text">
+  </div>
+</div>
+<div class="row">
+  <div class="col-3"> description</div>
+  <div class="col-4">
+    <textarea [(ngModel)]="article.desc" class="form-control" cols="30" rows="10"></textarea>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3"> image</div>
+  <div class="col-4">
+    <input class="form-control" [(ngModel)]="article.img" type="text">
+  </div>
+</div>
+<div class="row">
+  <div class="col-3"> price</div>
+  <div class="col-4">
+    <input [(ngModel)]="article.price" class="form-control" type="number">
+  </div>
+</div>
+<div class="row">
+  <div class="col-3"> category</div>
+  <div class="col-4">
+    <input class="form-control" [(ngModel)]="article.category" type="text">
+  </div>
+</div>
+
+<button class="btn btn-primary" (click)="add()">Add</button>
